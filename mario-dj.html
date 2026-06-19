@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mario DJ - Official Website</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #0d0d1a;
+  --purple: #4338CA;
+  --purple-light: #6d5ce7;
+  --cyan: #00FFFF;
+  --pink: #FF006E;
+  --green: #00ff88;
+  --gold: #FFD700;
+  --text: #F8FAFC;
+  --muted: #94a3b8;
+  --glow-purple: 0 0 20px rgba(67,56,202,0.8), 0 0 60px rgba(67,56,202,0.4);
+  --glow-cyan: 0 0 20px rgba(0,255,255,0.8), 0 0 60px rgba(0,255,255,0.3);
+  --glow-pink: 0 0 20px rgba(255,0,110,0.8), 0 0 60px rgba(255,0,110,0.3);
+  --glow-green: 0 0 20px rgba(0,255,136,0.8), 0 0 60px rgba(0,255,136,0.3);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;overflow-x:hidden;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#0a0a0f;}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px;}
+
+/* ── CANVAS BG ── */
+#canvas-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+
+/* ── NAV ── */
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 32px);max-width:1100px;background:rgba(10,10,15,0.7);backdrop-filter:blur(20px);border:1px solid rgba(67,56,202,0.3);border-radius:16px;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:'Righteous',sans-serif;font-size:1.5rem;color:var(--text);letter-spacing:2px;text-shadow:var(--glow-cyan);}
+.nav-logo span{color:var(--cyan);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:500;letter-spacing:.5px;transition:color .2s,text-shadow .2s;cursor:pointer;}
+.nav-links a:hover{color:var(--cyan);text-shadow:var(--glow-cyan);}
+.nav-cta{background:linear-gradient(135deg,var(--purple),var(--pink));border:none;color:#fff;padding:10px 24px;border-radius:50px;font-family:'Poppins',sans-serif;font-weight:600;font-size:.85rem;cursor:pointer;transition:transform .2s,box-shadow .2s;white-space:nowrap;}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:var(--glow-purple);}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:.2s;}
+@media(max-width:768px){
+  .nav-links{display:none;}.nav-cta{display:none;}
+  .nav-hamburger{display:flex;}
+}
+
+/* ── HERO ── */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;z-index:1;padding:120px 20px 80px;}
+.hero-inner{max-width:900px;position:relative;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(67,56,202,0.15);border:1px solid rgba(67,56,202,0.4);border-radius:50px;padding:6px 18px;margin-bottom:28px;font-size:.8rem;letter-spacing:1px;color:var(--cyan);text-transform:uppercase;}
+.badge-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulse-dot 1.5s infinite;}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(0,255,255,.4);}50%{box-shadow:0 0 0 6px rgba(0,255,255,0);}}
+.hero-name{font-family:'Righteous',sans-serif;font-size:clamp(3.5rem,10vw,8rem);line-height:1;color:#fff;margin-bottom:16px;position:relative;}
+.hero-name .mario{display:block;color:var(--text);}
+.hero-name .dj{display:block;background:linear-gradient(135deg,var(--cyan),var(--purple-light),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 30px rgba(0,255,255,.5));}
+.glitch{position:relative;}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;width:100%;}
+.glitch::before{color:var(--cyan);clip:rect(0,900px,0,0);animation:glitch1 3s infinite linear alternate-reverse;}
+.glitch::after{color:var(--pink);clip:rect(0,900px,0,0);animation:glitch2 3s infinite linear alternate-reverse;left:2px;}
+@keyframes glitch1{0%{clip:rect(42px,9999px,44px,0);}5%{clip:rect(12px,9999px,59px,0);}10%{clip:rect(48px,9999px,29px,0);}15%{clip:rect(42px,9999px,73px,0);}20%{clip:rect(63px,9999px,27px,0);}25%{clip:rect(34px,9999px,55px,0);}100%{clip:rect(99px,9999px,1px,0);}}
+@keyframes glitch2{0%{clip:rect(65px,9999px,99px,0);left:2px;}5%{clip:rect(79px,9999px,19px,0);left:-2px;}10%{clip:rect(5px,9999px,38px,0);left:2px;}100%{clip:rect(20px,9999px,80px,0);left:-2px;}}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.3rem);color:var(--muted);margin-bottom:12px;font-weight:300;letter-spacing:.5px;}
+.hero-sub span{color:var(--cyan);font-weight:600;}
+.hero-tagline{font-size:clamp(.85rem,1.5vw,1rem);color:rgba(148,163,184,.7);margin-bottom:48px;letter-spacing:1px;}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;padding:16px 36px;border-radius:50px;font-weight:700;font-size:1rem;text-decoration:none;cursor:pointer;border:none;font-family:'Poppins',sans-serif;transition:transform .2s,box-shadow .2s;letter-spacing:.5px;}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 20px 60px rgba(67,56,202,.5);}
+.btn-secondary{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--cyan);padding:14px 34px;border-radius:50px;font-weight:600;font-size:1rem;text-decoration:none;cursor:pointer;border:2px solid var(--cyan);font-family:'Poppins',sans-serif;transition:all .2s;letter-spacing:.5px;}
+.btn-secondary:hover{background:rgba(0,255,255,.1);box-shadow:var(--glow-cyan);transform:translateY(-2px);}
+.hero-visualizer{display:flex;align-items:flex-end;justify-content:center;gap:4px;height:60px;margin-top:60px;}
+.bar{width:6px;background:linear-gradient(to top,var(--purple),var(--cyan));border-radius:3px 3px 0 0;animation:bar-dance var(--d) ease-in-out infinite alternate;}
+@keyframes bar-dance{from{height:8px;opacity:.4;}to{height:var(--h);opacity:1;}}
+
+/* ── SECTION BASE ── */
+section{position:relative;z-index:1;padding:100px 20px;}
+.container{max-width:1100px;margin:0 auto;}
+.section-label{display:inline-block;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;font-weight:600;}
+.section-title{font-family:'Righteous',sans-serif;font-size:clamp(2rem,5vw,3rem);color:var(--text);margin-bottom:16px;line-height:1.1;}
+.section-title span{background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.section-desc{color:var(--muted);font-size:1rem;max-width:600px;line-height:1.7;}
+.divider{width:60px;height:3px;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:2px;margin:20px 0 48px;}
+
+/* ── STATS ── */
+#stats{padding:60px 20px;background:linear-gradient(180deg,transparent,rgba(67,56,202,.05),transparent);}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2px;border:1px solid rgba(67,56,202,.2);border-radius:20px;overflow:hidden;background:rgba(67,56,202,.1);}
+.stat-item{padding:40px 24px;text-align:center;background:rgba(10,10,15,.9);transition:background .3s;}
+.stat-item:hover{background:rgba(67,56,202,.1);}
+.stat-num{font-family:'Righteous',sans-serif;font-size:clamp(2.5rem,5vw,3.5rem);background:linear-gradient(135deg,var(--cyan),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+.stat-label{color:var(--muted);font-size:.85rem;margin-top:8px;letter-spacing:1px;text-transform:uppercase;}
+
+/* ── SERVICES ── */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+.service-card{background:rgba(13,13,26,.8);border:1px solid rgba(67,56,202,.2);border-radius:20px;padding:36px 28px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;transform-style:preserve-3d;}
+.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(67,56,202,.1),transparent);opacity:0;transition:.3s;}
+.service-card:hover::before{opacity:1;}
+.service-card:hover{border-color:rgba(0,255,255,.4);transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(0,255,255,.1);}
+.service-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.6rem;}
+.service-icon.purple{background:rgba(67,56,202,.2);border:1px solid rgba(67,56,202,.4);}
+.service-icon.cyan{background:rgba(0,255,255,.1);border:1px solid rgba(0,255,255,.3);}
+.service-icon.pink{background:rgba(255,0,110,.1);border:1px solid rgba(255,0,110,.3);}
+.service-icon.gold{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);}
+.service-card h3{font-family:'Righteous',sans-serif;font-size:1.2rem;color:var(--text);margin-bottom:10px;letter-spacing:.5px;}
+.service-card p{color:var(--muted);font-size:.88rem;line-height:1.7;}
+.service-tag{display:inline-block;margin-top:16px;padding:4px 12px;border-radius:50px;font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.tag-purple{background:rgba(67,56,202,.2);color:var(--purple-light);border:1px solid rgba(67,56,202,.3);}
+.tag-cyan{background:rgba(0,255,255,.1);color:var(--cyan);border:1px solid rgba(0,255,255,.2);}
+.tag-pink{background:rgba(255,0,110,.1);color:var(--pink);border:1px solid rgba(255,0,110,.2);}
+.tag-gold{background:rgba(255,215,0,.1);color:var(--gold);border:1px solid rgba(255,215,0,.2);}
+
+/* ── PRICING ── */
+#pricing{background:radial-gradient(ellipse at 50% 0%,rgba(67,56,202,.15),transparent 60%);}
+.pricing-toggle{display:flex;align-items:center;gap:16px;margin-bottom:48px;justify-content:center;}
+.toggle-label{color:var(--muted);font-size:.9rem;}
+.toggle-label.active{color:var(--text);font-weight:600;}
+.toggle{width:52px;height:28px;background:rgba(67,56,202,.3);border-radius:50px;position:relative;cursor:pointer;border:1px solid rgba(67,56,202,.4);transition:.3s;}
+.toggle-thumb{width:22px;height:22px;background:linear-gradient(135deg,var(--purple),var(--cyan));border-radius:50%;position:absolute;top:2px;left:2px;transition:.3s;box-shadow:var(--glow-purple);}
+.toggle.on .toggle-thumb{left:26px;}
+.save-badge{background:rgba(0,255,136,.15);color:var(--green);border:1px solid rgba(0,255,136,.3);border-radius:50px;padding:3px 10px;font-size:.72rem;font-weight:700;letter-spacing:.5px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start;}
+.pricing-card{background:rgba(13,13,26,.9);border:1px solid rgba(67,56,202,.2);border-radius:24px;padding:40px 32px;position:relative;transition:all .3s;cursor:pointer;}
+.pricing-card:hover{transform:translateY(-6px);}
+.pricing-card.featured{border-color:var(--cyan);background:rgba(0,255,255,.03);box-shadow:0 0 60px rgba(0,255,255,.08);}
+.pricing-card.featured::before{content:'';position:absolute;inset:-1px;border-radius:24px;background:linear-gradient(135deg,var(--cyan),var(--purple));z-index:-1;opacity:.5;}
+.popular-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;padding:6px 20px;border-radius:50px;font-size:.75rem;font-weight:700;letter-spacing:1px;white-space:nowrap;}
+.plan-name{font-family:'Righteous',sans-serif;font-size:.95rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:6px;}
+.price-currency{font-size:1.3rem;color:var(--text);font-weight:600;margin-top:8px;}
+.price-amount{font-family:'Righteous',sans-serif;font-size:clamp(2.5rem,5vw,3.5rem);color:var(--text);line-height:1;}
+.price-period{color:var(--muted);font-size:.85rem;}
+.plan-desc{color:var(--muted);font-size:.85rem;margin-bottom:28px;line-height:1.6;}
+.plan-divider{height:1px;background:rgba(67,56,202,.2);margin-bottom:24px;}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:32px;}
+.plan-features li{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--muted);}
+.plan-features li.active{color:var(--text);}
+.feature-check{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.feature-check.yes{background:rgba(0,255,136,.15);border:1px solid rgba(0,255,136,.3);}
+.feature-check.no{background:rgba(148,163,184,.05);border:1px solid rgba(148,163,184,.1);}
+.btn-plan{width:100%;padding:14px;border-radius:50px;font-family:'Poppins',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;letter-spacing:.5px;border:none;}
+.btn-plan.outline{background:transparent;color:var(--purple-light);border:2px solid rgba(67,56,202,.4);}
+.btn-plan.outline:hover{border-color:var(--purple);background:rgba(67,56,202,.1);}
+.btn-plan.solid{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;box-shadow:0 8px 30px rgba(0,255,255,.2);}
+.btn-plan.solid:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,255,255,.35);}
+.btn-plan.dark{background:rgba(67,56,202,.15);color:var(--purple-light);border:2px solid rgba(67,56,202,.3);}
+.btn-plan.dark:hover{background:rgba(67,56,202,.25);}
+.pricing-note{text-align:center;margin-top:32px;color:var(--muted);font-size:.82rem;}
+.pricing-note a{color:var(--cyan);text-decoration:none;cursor:pointer;}
+
+/* ── TESTIMONIALS ── */
+#testimonials{background:radial-gradient(ellipse at 50% 100%,rgba(255,0,110,.08),transparent 60%);}
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;}
+.testimonial-card{background:rgba(13,13,26,.8);border:1px solid rgba(67,56,202,.15);border-radius:20px;padding:32px 28px;transition:all .3s;}
+.testimonial-card:hover{border-color:rgba(255,0,110,.3);transform:translateY(-4px);box-shadow:0 16px 50px rgba(0,0,0,.4);}
+.stars{display:flex;gap:4px;margin-bottom:16px;}
+.star{width:16px;height:16px;fill:var(--gold);}
+.testimonial-text{color:var(--muted);font-size:.9rem;line-height:1.8;margin-bottom:24px;font-style:italic;}
+.testimonial-author{display:flex;align-items:center;gap:12px;}
+.author-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Righteous',sans-serif;font-size:1.1rem;font-weight:700;flex-shrink:0;}
+.author-name{font-weight:600;font-size:.9rem;color:var(--text);}
+.author-role{font-size:.78rem;color:var(--muted);}
+
+/* ── MIX PLAYER ── */
+#player{background:rgba(13,13,26,.6);border-top:1px solid rgba(67,56,202,.15);border-bottom:1px solid rgba(67,56,202,.15);}
+.player-inner{display:flex;align-items:center;gap:28px;flex-wrap:wrap;background:rgba(0,0,0,.3);border:1px solid rgba(67,56,202,.2);border-radius:20px;padding:28px 32px;}
+.player-disc{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#111,#333);border:3px solid rgba(67,56,202,.4);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;}
+.player-disc::after{content:'';position:absolute;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid rgba(67,56,202,.5);}
+.disc-spinning{animation:spin 3s linear infinite paused;}
+.disc-spinning.playing{animation-play-state:running;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.player-info{flex:1;min-width:200px;}
+.player-track{font-weight:700;font-size:1rem;color:var(--text);margin-bottom:4px;}
+.player-artist{font-size:.82rem;color:var(--muted);}
+.player-controls{display:flex;align-items:center;gap:12px;}
+.player-btn{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid rgba(67,56,202,.3);cursor:pointer;transition:all .2s;color:var(--text);}
+.player-btn:hover{background:rgba(67,56,202,.2);border-color:var(--cyan);color:var(--cyan);}
+.player-btn.play{width:54px;height:54px;background:linear-gradient(135deg,var(--purple),var(--cyan));border:none;box-shadow:var(--glow-purple);}
+.player-btn.play:hover{transform:scale(1.08);}
+.player-progress{flex:1;min-width:150px;}
+.progress-bar{height:4px;background:rgba(67,56,202,.2);border-radius:2px;cursor:pointer;position:relative;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:2px;width:35%;transition:width .3s;}
+.progress-time{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:6px;}
+.player-vol{display:flex;align-items:center;gap:8px;}
+
+/* ── GALLERY ── */
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.gallery-item{border-radius:16px;overflow:hidden;aspect-ratio:4/3;position:relative;cursor:pointer;transition:transform .3s;}
+.gallery-item:hover{transform:scale(1.02);z-index:2;}
+.gallery-item.tall{grid-row:span 2;aspect-ratio:unset;}
+.gallery-placeholder{width:100%;height:100%;min-height:180px;display:flex;align-items:center;justify-content:center;font-size:2rem;border:1px solid rgba(67,56,202,.2);}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);opacity:0;transition:.3s;display:flex;align-items:flex-end;padding:16px;}
+.gallery-item:hover .gallery-overlay{opacity:1;}
+.gallery-caption{font-size:.82rem;color:#fff;font-weight:600;}
+@media(max-width:640px){.gallery-grid{grid-template-columns:repeat(2,1fr);}.gallery-item.tall{grid-row:span 1;aspect-ratio:4/3;}}
+
+/* ── CONTACT ── */
+#contact{background:radial-gradient(ellipse at 50% 50%,rgba(67,56,202,.1),transparent 60%);}
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:start;}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr;}}
+.contact-info{display:flex;flex-direction:column;gap:24px;}
+.contact-info-item{display:flex;align-items:flex-start;gap:16px;}
+.contact-icon{width:44px;height:44px;border-radius:12px;background:rgba(67,56,202,.15);border:1px solid rgba(67,56,202,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;}
+.contact-label{font-size:.78rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.contact-value{color:var(--text);font-weight:500;font-size:.95rem;}
+.form-group{margin-bottom:20px;}
+.form-group label{display:block;font-size:.8rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.form-control{width:100%;background:rgba(13,13,26,.8);border:1px solid rgba(67,56,202,.2);border-radius:12px;padding:14px 18px;color:var(--text);font-family:'Poppins',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s,box-shadow .2s;}
+.form-control:focus{border-color:rgba(0,255,255,.5);box-shadow:0 0 0 3px rgba(0,255,255,.08);}
+.form-control::placeholder{color:rgba(148,163,184,.4);}
+textarea.form-control{resize:none;min-height:120px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:480px){.form-row{grid-template-columns:1fr;}}
+.form-select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234338CA' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;}
+
+/* ── FOOTER ── */
+footer{background:rgba(5,5,10,.95);border-top:1px solid rgba(67,56,202,.15);padding:60px 20px 32px;}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;};}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr;};}
+.footer-brand .nav-logo{font-size:1.8rem;margin-bottom:12px;display:block;}
+.footer-desc{color:var(--muted);font-size:.85rem;line-height:1.7;margin-bottom:20px;}
+.social-links{display:flex;gap:10px;}
+.social-btn{width:40px;height:40px;border-radius:10px;background:rgba(67,56,202,.1);border:1px solid rgba(67,56,202,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;text-decoration:none;font-size:1rem;}
+.social-btn:hover{background:rgba(67,56,202,.3);border-color:var(--cyan);transform:translateY(-2px);}
+.footer-col h4{font-family:'Righteous',sans-serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;color:var(--text);margin-bottom:16px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul li a{color:var(--muted);text-decoration:none;font-size:.85rem;transition:color .2s;}
+.footer-col ul li a:hover{color:var(--cyan);}
+.footer-bottom{border-top:1px solid rgba(67,56,202,.1);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap;gap:12px;}
+.footer-copy{color:var(--muted);font-size:.8rem;}
+.footer-legal{display:flex;gap:20px;}
+.footer-legal a{color:var(--muted);font-size:.78rem;text-decoration:none;transition:color .2s;}
+.footer-legal a:hover{color:var(--cyan);}
+
+/* ── ANIMATIONS ── */
+.fade-up{opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+/* ── FLOATING PARTICLES ── */
+.particle{position:fixed;pointer-events:none;border-radius:50%;z-index:0;}
+
+/* ── NEON LINE ── */
+.neon-line{height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);margin:0;opacity:.3;}
+</style>
+</head>
+<body>
+
+<canvas id="canvas-bg"></canvas>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">MARIO<span>DJ</span></span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Servizi</a></li>
+    <li><a href="#pricing">Prezzi</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contatti</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Prenota Ora</button>
+  <div class="nav-hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Disponibile per eventi 2025
+    </div>
+    <h1 class="hero-name">
+      <span class="mario">MARIO</span>
+      <span class="dj glitch" data-text="DJ">DJ</span>
+    </h1>
+    <p class="hero-sub">Il suono che <span>trasforma</span> ogni momento</p>
+    <p class="hero-tagline">Matrimoni · Discoteche · Feste Private · Festival · Corporate</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Scopri i Pacchetti
+      </button>
+      <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.61 5.61l.9-.81a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Contattami
+      </button>
+    </div>
+    <div class="hero-visualizer" id="visualizer"></div>
+  </div>
+</section>
+
+<div class="neon-line"></div>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fade-up">
+        <div class="stat-num" data-target="500">0</div>
+        <div class="stat-label">+ Eventi</div>
+      </div>
+      <div class="stat-item fade-up">
+        <div class="stat-num" data-target="12">0</div>
+        <div class="stat-label">Anni di Esperienza</div>
+      </div>
+      <div class="stat-item fade-up">
+        <div class="stat-num" data-target="50">0</div>
+        <div class="stat-label">Città in Italia</div>
+      </div>
+      <div class="stat-item fade-up">
+        <div class="stat-num" data-target="98">0</div>
+        <div class="stat-label">% Clienti Soddisfatti</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="fade-up">
+      <span class="section-label">Cosa offro</span>
+      <h2 class="section-title">I Miei <span>Servizi</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-up" style="transition-delay:.1s">
+        <div class="service-icon purple">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6d5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <h3>Matrimoni & Cerimonie</h3>
+        <p>Un mix perfetto per il giorno più importante. Dalla cerimonia al rinfresco, fino all'alba: ogni momento diventa magia.</p>
+        <span class="service-tag tag-purple">Più Richiesto</span>
+      </div>
+      <div class="service-card fade-up" style="transition-delay:.15s">
+        <div class="service-icon cyan">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Club & Discoteche</h3>
+        <p>Set tecno, house, hip-hop o commerciale: sound system professionale e gestione della pista da ballo per una serata indimenticabile.</p>
+        <span class="service-tag tag-cyan">Club Ready</span>
+      </div>
+      <div class="service-card fade-up" style="transition-delay:.2s">
+        <div class="service-icon pink">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF006E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Feste Private</h3>
+        <p>Compleanni, lauree, anniversari e feste a tema. Attrezzatura completa, luci LED e playlist personalizzata sui tuoi gusti.</p>
+        <span class="service-tag tag-pink">Personalizzato</span>
+      </div>
+      <div class="service-card fade-up" style="transition-delay:.25s">
+        <div class="service-icon gold">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Corporate & Business</h3>
+        <p>Aperitivi aziendali, team building e gala dinner. Musica d'ambiente professionale per valorizzare il tuo brand.</p>
+        <span class="service-tag tag-gold">Business</span>
+      </div>
+      <div class="service-card fade-up" style="transition-delay:.3s">
+        <div class="service-icon purple">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6d5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        </div>
+        <h3>Festival & Outdoor</h3>
+        <p>Palchi open air, festival estivi e sagre. Impianto audio potente, resistente all'esterno e performance da headliner.</p>
+        <span class="service-tag tag-purple">Outdoor</span>
+      </div>
+      <div class="service-card fade-up" style="transition-delay:.35s">
+        <div class="service-icon cyan">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+        </div>
+        <h3>Produzione & Mix</h3>
+        <p>Registrazione mix personalizzati, produzione di jingle e colonne sonore per le tue comunicazioni digitali.</p>
+        <span class="service-tag tag-cyan">Studio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MINI PLAYER -->
+<section id="player">
+  <div class="container">
+    <div class="player-inner">
+      <div class="player-disc disc-spinning" id="disc">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </div>
+      <div class="player-info">
+        <div class="player-track">Midnight Groove — Mix Esclusivo</div>
+        <div class="player-artist">MarioDJ · House · 2024</div>
+      </div>
+      <div class="player-controls">
+        <button class="player-btn" aria-label="Precedente">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+        </button>
+        <button class="player-btn play" id="playBtn" aria-label="Play/Pausa">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" id="playIcon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+        <button class="player-btn" aria-label="Successivo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
+        </button>
+      </div>
+      <div class="player-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-time">
+          <span id="currentTime">1:24</span>
+          <span>3:58</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="fade-up" style="text-align:center;max-width:600px;margin:0 auto 12px;">
+      <span class="section-label">Pacchetti</span>
+      <h2 class="section-title">Scegli il tuo <span>Pacchetto</span></h2>
+      <p class="section-desc" style="margin:0 auto;">Prezzi trasparenti, nessuna sorpresa. Personalizzazione disponibile per ogni esigenza.</p>
+    </div>
+    <div style="display:flex;justify-content:center;"><div class="divider"></div></div>
+
+    <div class="pricing-toggle fade-up">
+      <span class="toggle-label active">Orario</span>
+      <div class="toggle" id="pricingToggle">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span class="toggle-label">Evento Completo</span>
+      <span class="save-badge">-20%</span>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- BASE -->
+      <div class="pricing-card fade-up" style="transition-delay:.1s">
+        <div class="plan-name">Base</div>
+        <div class="plan-price">
+          <span class="price-currency">€</span>
+          <span class="price-amount" data-hourly="150" data-event="450">150</span>
+          <span class="price-period" id="period1">/ora</span>
+        </div>
+        <p class="plan-desc">Perfetto per feste piccole e aperitivi. Musica di qualità senza fronzoli.</p>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>DJ set fino a 3 ore</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Sistema audio professionale</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Playlist personalizzata</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Microfono per annunci</li>
+          <li><span class="feature-check no"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(148,163,184,.3)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Impianto luci LED</li>
+          <li><span class="feature-check no"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(148,163,184,.3)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Macchina del fumo</li>
+          <li><span class="feature-check no"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(148,163,184,.3)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Sessione foto/video</li>
+        </ul>
+        <button class="btn-plan outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Inizia con Base</button>
+      </div>
+
+      <!-- PRO (featured) -->
+      <div class="pricing-card featured fade-up" style="transition-delay:.15s">
+        <div class="popular-badge">PIU' POPOLARE</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">
+          <span class="price-currency">€</span>
+          <span class="price-amount" data-hourly="250" data-event="750">250</span>
+          <span class="price-period" id="period2">/ora</span>
+        </div>
+        <p class="plan-desc">Il pacchetto preferito per matrimoni e feste di compleanno importanti.</p>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>DJ set fino a 6 ore</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Sistema audio premium</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Playlist personalizzata</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Impianto luci LED RGB</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Macchina del fumo</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>2 Microfoni wireless</li>
+          <li><span class="feature-check no"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(148,163,184,.3)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Sessione foto/video</li>
+        </ul>
+        <button class="btn-plan solid" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Scegli Pro</button>
+      </div>
+
+      <!-- ELITE -->
+      <div class="pricing-card fade-up" style="transition-delay:.2s">
+        <div class="plan-name">Elite</div>
+        <div class="plan-price">
+          <span class="price-currency">€</span>
+          <span class="price-amount" data-hourly="400" data-event="1200">400</span>
+          <span class="price-period" id="period3">/ora</span>
+        </div>
+        <p class="plan-desc">L'esperienza completa per eventi esclusivi, aziendali e festival.</p>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>DJ set illimitato</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Sistema audio flagship</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Show luci professionale</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Macchine fumo + CO₂</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Sessione foto/video</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Consulenza pre-evento</li>
+          <li class="active"><span class="feature-check yes"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Assistente tecnico dedicato</li>
+        </ul>
+        <button class="btn-plan dark" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Scegli Elite</button>
+      </div>
+    </div>
+    <p class="pricing-note fade-up">Tutti i prezzi sono IVA esclusa. <a onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Richiedi un preventivo personalizzato →</a></p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="fade-up">
+      <span class="section-label">Recensioni</span>
+      <h2 class="section-title">Cosa dicono i <span>Clienti</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card fade-up" style="transition-delay:.1s">
+        <div class="stars">
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="testimonial-text">"Mario ha reso il nostro matrimonio perfetto. La musica era esattamente quella che volevamo, ha capito subito il nostro stile. Tutti gli ospiti hanno ballato fino alle 4 di mattina!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#4338CA,#00FFFF);color:#fff;">S</div>
+          <div>
+            <div class="author-name">Sara & Luca Bianchi</div>
+            <div class="author-role">Matrimonio · Roma, Giugno 2024</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-up" style="transition-delay:.15s">
+        <div class="stars">
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="testimonial-text">"Professionale, puntuale e con un gusto musicale eccezionale. Il set che ha fatto al nostro club sabato sera è stato il migliore della stagione. Torneremo sicuramente!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#FF006E,#4338CA);color:#fff;">M</div>
+          <div>
+            <div class="author-name">Marco Esposito</div>
+            <div class="author-role">Club Manager · Milano</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-up" style="transition-delay:.2s">
+        <div class="stars">
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="testimonial-text">"Abbiamo organizzato il nostro evento aziendale con Mario. Discrezione, eleganza e musica perfettamente calibrata per l'ambiente. I colleghi sono rimasti colpiti!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#00ff88,#4338CA);color:#fff;">G</div>
+          <div>
+            <div class="author-name">Giulia Ferretti</div>
+            <div class="author-role">Event Manager · Napoli</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="fade-up">
+      <span class="section-label">Portfolio</span>
+      <h2 class="section-title">Le Mie <span>Performance</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="gallery-grid fade-up">
+      <div class="gallery-item tall" style="background:linear-gradient(135deg,#0d0d1a,#1a1a3e);">
+        <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(67,56,202,.3),rgba(0,255,255,.1));">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Wedding Night — Roma 2024</span></div>
+      </div>
+      <div class="gallery-item" style="background:linear-gradient(135deg,#1a0d2e,#0d1a2e);">
+        <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(255,0,110,.2),rgba(67,56,202,.1));">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#FF006E" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Club Set — Milano</span></div>
+      </div>
+      <div class="gallery-item" style="background:linear-gradient(135deg,#0d1a1a,#0a0f1a);">
+        <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(0,255,255,.15),rgba(67,56,202,.1));">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Festival Estate — Napoli</span></div>
+      </div>
+      <div class="gallery-item" style="background:linear-gradient(135deg,#1a1a0d,#0d1a0d);">
+        <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(67,56,202,.1));">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Gala Aziendale — Torino</span></div>
+      </div>
+      <div class="gallery-item" style="background:linear-gradient(135deg,#1a0d1a,#0d0d1a);">
+        <div class="gallery-placeholder" style="background:linear-gradient(135deg,rgba(0,255,136,.15),rgba(67,56,202,.1));">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="gallery-overlay"><span class="gallery-caption">Compleanno Privato</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="fade-up">
+      <span class="section-label">Prenota</span>
+      <h2 class="section-title">Contattami per il <span>Tuo Evento</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info fade-up">
+        <div class="contact-info-item">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.61 5.61l.9-.81a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Telefono</div>
+            <div class="contact-value">+39 333 000 0000</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6d5ce7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-value">info@mariodj.it</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF006E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Zona</div>
+            <div class="contact-value">Italia · Disponibile ovunque</div>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Risposta</div>
+            <div class="contact-value">Entro 24 ore</div>
+          </div>
+        </div>
+      </div>
+
+      <form class="fade-up" style="transition-delay:.1s" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nome">Nome *</label>
+            <input type="text" id="nome" class="form-control" placeholder="Il tuo nome" required>
+          </div>
+          <div class="form-group">
+            <label for="cognome">Cognome *</label>
+            <input type="text" id="cognome" class="form-control" placeholder="Il tuo cognome" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" class="form-control" placeholder="email@esempio.it" required>
+          </div>
+          <div class="form-group">
+            <label for="telefono">Telefono</label>
+            <input type="tel" id="telefono" class="form-control" placeholder="+39 333 000 0000">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tipoEvento">Tipo di Evento *</label>
+            <select id="tipoEvento" class="form-control form-select" required>
+              <option value="" disabled selected>Seleziona tipo</option>
+              <option>Matrimonio</option>
+              <option>Festa di compleanno</option>
+              <option>Club / Discoteca</option>
+              <option>Evento aziendale</option>
+              <option>Festival / Outdoor</option>
+              <option>Altro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="data">Data Evento *</label>
+            <input type="date" id="data" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="pacchetto">Pacchetto di Interesse</label>
+          <select id="pacchetto" class="form-control form-select">
+            <option value="" disabled selected>Seleziona pacchetto</option>
+            <option>Base (da €150/ora)</option>
+            <option>Pro (da €250/ora)</option>
+            <option>Elite (da €400/ora)</option>
+            <option>Preventivo personalizzato</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="messaggio">Messaggio</label>
+          <textarea id="messaggio" class="form-control" placeholder="Raccontami del tuo evento: location, numero di ospiti, genere musicale preferito..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;" id="submitBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Invia Richiesta
+        </button>
+        <p id="formMsg" style="text-align:center;margin-top:12px;font-size:.85rem;display:none;"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="nav-logo">MARIO<span>DJ</span></span>
+        <p class="footer-desc">Il suono che trasforma ogni momento in un ricordo indimenticabile. 12 anni di esperienza, 500+ eventi, 50 città in Italia.</p>
+        <div class="social-links">
+          <a class="social-btn" href="#" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E1306C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a class="social-btn" href="#" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1877F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a class="social-btn" href="#" aria-label="TikTok">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          </a>
+          <a class="social-btn" href="#" aria-label="YouTube">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Servizi</h4>
+        <ul>
+          <li><a href="#services">Matrimoni</a></li>
+          <li><a href="#services">Club & Disco</a></li>
+          <li><a href="#services">Feste Private</a></li>
+          <li><a href="#services">Corporate</a></li>
+          <li><a href="#services">Festival</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Pacchetti</h4>
+        <ul>
+          <li><a href="#pricing">Base — da €150/h</a></li>
+          <li><a href="#pricing">Pro — da €250/h</a></li>
+          <li><a href="#pricing">Elite — da €400/h</a></li>
+          <li><a href="#contact">Preventivo Custom</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Info</h4>
+        <ul>
+          <li><a href="#about">Chi sono</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#testimonials">Recensioni</a></li>
+          <li><a href="#contact">Contatti</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 MarioDJ · Tutti i diritti riservati · P.IVA 00000000000</p>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Termini di Servizio</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── THREE.JS 3D BACKGROUND ──
+(function(){
+  const canvas = document.getElementById('canvas-bg');
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  camera.position.z = 5;
+
+  // Particle system
+  const particleCount = 1200;
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+  const sizes = new Float32Array(particleCount);
+  const colorPalette = [
+    new THREE.Color('#4338CA'),
+    new THREE.Color('#00FFFF'),
+    new THREE.Color('#FF006E'),
+    new THREE.Color('#6d5ce7'),
+    new THREE.Color('#00ff88'),
+  ];
+  for(let i = 0; i < particleCount; i++){
+    positions[i*3]   = (Math.random()-0.5)*30;
+    positions[i*3+1] = (Math.random()-0.5)*30;
+    positions[i*3+2] = (Math.random()-0.5)*20;
+    const c = colorPalette[Math.floor(Math.random()*colorPalette.length)];
+    colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
+    sizes[i] = Math.random() * 3 + 1;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors,3));
+  geo.setAttribute('size', new THREE.BufferAttribute(sizes,1));
+  const mat = new THREE.PointsMaterial({size:.06, vertexColors:true, transparent:true, opacity:.7, sizeAttenuation:true});
+  const particles = new THREE.Points(geo, mat);
+  scene.add(particles);
+
+  // Floating torus (vinyl record effect)
+  const torusGeo = new THREE.TorusGeometry(1.8, 0.04, 16, 100);
+  const torusMat = new THREE.MeshBasicMaterial({color:0x4338CA, wireframe:false, transparent:true, opacity:.15});
+  const torus = new THREE.Mesh(torusGeo, torusMat);
+  torus.position.set(3, 1, -3);
+  scene.add(torus);
+
+  const torus2Geo = new THREE.TorusGeometry(2.4, 0.03, 16, 100);
+  const torus2Mat = new THREE.MeshBasicMaterial({color:0x00FFFF, transparent:true, opacity:.08});
+  const torus2 = new THREE.Mesh(torus2Geo, torus2Mat);
+  torus2.position.set(-4, -1, -5);
+  scene.add(torus2);
+
+  // Grid floor
+  const gridHelper = new THREE.GridHelper(40, 40, 0x4338CA, 0x1a1a3e);
+  gridHelper.position.y = -8;
+  gridHelper.material.transparent = true;
+  gridHelper.material.opacity = 0.15;
+  scene.add(gridHelper);
+
+  // Mouse parallax
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  // Resize
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // Animate
+  let t = 0;
+  (function animate(){
+    requestAnimationFrame(animate);
+    t += 0.005;
+    particles.rotation.y = t * 0.05 + mouseX * 0.1;
+    particles.rotation.x = mouseY * 0.05;
+    torus.rotation.x = t * 0.3;
+    torus.rotation.z = t * 0.2;
+    torus2.rotation.x = -t * 0.2;
+    torus2.rotation.y = t * 0.15;
+    camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.02;
+    camera.position.y += (-mouseY * 0.3 - camera.position.y) * 0.02;
+    renderer.render(scene, camera);
+  })();
+})();
+
+// ── AUDIO VISUALIZER BARS ──
+(function(){
+  const viz = document.getElementById('visualizer');
+  const barCount = 32;
+  const heights = [8,12,18,28,40,50,56,48,36,24,16,22,38,52,58,54,44,32,20,28,42,54,60,52,40,26,18,24,38,48,44,32];
+  for(let i=0;i<barCount;i++){
+    const b = document.createElement('div');
+    b.className = 'bar';
+    const h = heights[i%heights.length];
+    b.style.cssText = `--h:${h}px;--d:${(0.4+Math.random()*0.8).toFixed(2)}s;transition-delay:${i*0.03}s;`;
+    viz.appendChild(b);
+  }
+})();
+
+// ── SCROLL ANIMATIONS ──
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+
+// ── COUNTER ANIMATION ──
+function animateCounter(el, target){
+  let current = 0;
+  const duration = 2000;
+  const step = target / (duration / 16);
+  const timer = setInterval(()=>{
+    current = Math.min(current + step, target);
+    el.textContent = Math.round(current) + (el.closest('.stat-item').querySelector('.stat-label').textContent.includes('%') ? '' : '+');
+    if(current >= target) clearInterval(timer);
+  }, 16);
+}
+const counterObserver = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const nums = e.target.querySelectorAll('.stat-num');
+      nums.forEach(n=>animateCounter(n, parseInt(n.dataset.target)));
+      counterObserver.unobserve(e.target);
+    }
+  });
+},{threshold:.5});
+const statsSection = document.getElementById('stats');
+if(statsSection) counterObserver.observe(statsSection);
+
+// ── 3D TILT ON CARDS ──
+document.querySelectorAll('.service-card, .pricing-card, .testimonial-card').forEach(card=>{
+  card.addEventListener('mousemove', e=>{
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `perspective(600px) rotateY(${x*12}deg) rotateX(${-y*10}deg) translateY(-6px)`;
+  });
+  card.addEventListener('mouseleave', ()=>{
+    card.style.transform = '';
+  });
+});
+
+// ── PRICING TOGGLE ──
+let isEvent = false;
+const toggle = document.getElementById('pricingToggle');
+toggle.addEventListener('click',()=>{
+  isEvent = !isEvent;
+  toggle.classList.toggle('on', isEvent);
+  document.querySelectorAll('.price-amount').forEach(el=>{
+    el.textContent = isEvent ? el.dataset.event : el.dataset.hourly;
+  });
+  ['period1','period2','period3'].forEach(id=>{
+    document.getElementById(id).textContent = isEvent ? '/evento' : '/ora';
+  });
+});
+
+// ── PLAYER ──
+let playing = false;
+let progress = 35;
+const playBtn = document.getElementById('playBtn');
+const disc = document.getElementById('disc');
+const progressFill = document.getElementById('progressFill');
+const playIcon = document.getElementById('playIcon');
+playBtn.addEventListener('click',()=>{
+  playing = !playing;
+  disc.classList.toggle('playing', playing);
+  playIcon.innerHTML = playing
+    ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
+    : '<polygon points="5 3 19 12 5 21 5 3"/>';
+});
+let progInterval;
+setInterval(()=>{
+  if(!playing) return;
+  progress = Math.min(progress + 0.05, 100);
+  progressFill.style.width = progress + '%';
+  const total = 238;
+  const cur = Math.round(total * progress / 100);
+  const m = Math.floor(cur/60);
+  const s = cur%60;
+  document.getElementById('currentTime').textContent = m+':'+(s<10?'0':'')+s;
+  if(progress >= 100){ playing=false; disc.classList.remove('playing'); progress=0; }
+},100);
+
+// ── FORM SUBMIT ──
+function handleSubmit(e){
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('formMsg');
+  btn.disabled = true;
+  btn.textContent = 'Invio in corso...';
+  setTimeout(()=>{
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Richiesta Inviata!';
+    msg.textContent = 'Grazie! Ti risponderemo entro 24 ore.';
+    msg.style.color = '#00ff88';
+    msg.style.display = 'block';
+    e.target.reset();
+    setTimeout(()=>{
+      btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Invia Richiesta';
+      msg.style.display = 'none';
+    }, 4000);
+  }, 1200);
+}
+
+// ── NAV SMOOTH SCROLL ──
+document.querySelectorAll('a[href^="#"], .nav-links a').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const href = a.getAttribute('href');
+    if(href && href.startsWith('#') && href.length > 1){
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if(target) target.scrollIntoView({behavior:'smooth'});
+    }
+  });
+});
+
+// ── REDUCED MOTION ──
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.bar').forEach(b=>b.style.animation='none');
+  document.querySelectorAll('.glitch::before, .glitch::after').forEach(el=>el.style.animation='none');
+}
+</script>
+</body>
+</html>

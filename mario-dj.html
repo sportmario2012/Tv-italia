@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mario DJ — Official</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── FONTS FALLBACK ── */
+@font-face {
+  font-family: 'Righteous';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Impact'), local('Arial Black');
+  font-display: swap;
+}
+
+:root {
+  --bg: #07070f;
+  --bg2: #0d0d1a;
+  --purple: #4338CA;
+  --purple-l: #7c6ef5;
+  --cyan: #00e5ff;
+  --pink: #ff1a6e;
+  --green: #00ffaa;
+  --gold: #ffd700;
+  --text: #f0f4ff;
+  --muted: #7a8aaa;
+  --card: rgba(13,13,30,0.92);
+}
+
+/* ── RESET ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:var(--bg);color:var(--text);font-family:'Poppins','Segoe UI','Arial',sans-serif;overflow-x:hidden;min-height:100vh;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:#07070f;}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px;}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+
+/* ── CANVAS ── */
+#bgCanvas{
+  position:fixed;top:0;left:0;
+  width:100%;height:100%;
+  z-index:0;pointer-events:none;
+  opacity:.7;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:12px;left:50%;transform:translateX(-50%);
+  z-index:200;width:calc(100% - 24px);max-width:1100px;
+  background:rgba(7,7,15,.85);backdrop-filter:blur(24px);
+  border:1px solid rgba(67,56,202,.35);border-radius:16px;
+  padding:12px 24px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 4px 40px rgba(0,0,0,.5);
+}
+.logo{font-family:'Righteous','Impact','Arial Black',sans-serif;font-size:1.4rem;
+  letter-spacing:2px;color:var(--text);}
+.logo span{color:var(--cyan);text-shadow:0 0 12px rgba(0,229,255,.6);}
+.nav-links{display:flex;gap:24px;list-style:none;}
+.nav-links a{color:var(--muted);font-size:.83rem;font-weight:500;letter-spacing:.4px;
+  transition:color .2s;}
+.nav-links a:hover{color:var(--cyan);}
+.nav-btn{
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;border:none;padding:9px 22px;border-radius:50px;
+  font-weight:600;font-size:.82rem;letter-spacing:.4px;
+  transition:transform .2s,box-shadow .2s;
+}
+.nav-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(67,56,202,.5);}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px;}
+.hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;}
+@media(max-width:720px){
+  .nav-links,.nav-btn{display:none;}
+  .hamburger{display:flex;}
+  .logo{font-size:1.2rem;}
+}
+
+/* ── HERO ── */
+#hero{
+  position:relative;z-index:1;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:120px 20px 80px;overflow:hidden;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.3);
+  border-radius:50px;padding:6px 18px;margin-bottom:24px;
+  font-size:.75rem;letter-spacing:1.5px;color:var(--cyan);text-transform:uppercase;
+  font-weight:600;
+}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--cyan);flex-shrink:0;
+  animation:pulse 1.8s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,.5);}50%{box-shadow:0 0 0 7px rgba(0,229,255,0);}}
+.hero-title{
+  font-family:'Righteous','Impact','Arial Black',sans-serif;
+  font-size:clamp(3.5rem,14vw,9rem);line-height:.95;margin-bottom:20px;
+}
+.hero-title .line1{display:block;color:var(--text);letter-spacing:4px;}
+.hero-title .line2{
+  display:block;letter-spacing:6px;
+  background:linear-gradient(135deg,var(--cyan) 0%,var(--purple-l) 50%,var(--pink) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(0,229,255,.35));
+}
+/* fallback for browsers that don't support background-clip:text */
+@supports not (-webkit-background-clip:text){
+  .hero-title .line2{color:var(--cyan);filter:none;}
+}
+.hero-sub{
+  font-size:clamp(1rem,2.5vw,1.25rem);color:var(--muted);
+  margin-bottom:10px;font-weight:300;
+}
+.hero-sub b{color:var(--cyan);font-weight:600;}
+.hero-tags{
+  font-size:.82rem;color:rgba(122,138,170,.7);
+  letter-spacing:.8px;margin-bottom:48px;
+}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-grad{
+  display:inline-flex;align-items:center;gap:9px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;border:none;padding:15px 32px;border-radius:50px;
+  font-weight:700;font-size:.95rem;letter-spacing:.3px;
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-grad:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(67,56,202,.5);}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:9px;
+  background:transparent;color:var(--cyan);
+  border:2px solid rgba(0,229,255,.5);padding:13px 30px;border-radius:50px;
+  font-weight:600;font-size:.95rem;
+  transition:all .2s;
+}
+.btn-outline:hover{background:rgba(0,229,255,.08);border-color:var(--cyan);
+  box-shadow:0 0 24px rgba(0,229,255,.2);transform:translateY(-2px);}
+/* visualizer bars */
+.visualizer{display:flex;align-items:flex-end;justify-content:center;gap:3px;
+  height:52px;margin-top:56px;}
+.vbar{
+  width:5px;border-radius:3px 3px 0 0;
+  background:linear-gradient(to top,var(--purple),var(--cyan));
+  animation:vbar calc(.3s + var(--i) * .07s) ease-in-out infinite alternate;
+}
+@keyframes vbar{from{height:4px;opacity:.3;}to{height:var(--h);opacity:1;}}
+@media(prefers-reduced-motion:reduce){.vbar{animation:none;height:8px;}}
+
+/* ── SECTION BASE ── */
+section{position:relative;z-index:1;padding:90px 20px;}
+.wrap{max-width:1100px;margin:0 auto;}
+.sec-label{display:inline-block;font-size:.72rem;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--cyan);font-weight:700;margin-bottom:10px;}
+.sec-title{
+  font-family:'Righteous','Impact','Arial Black',sans-serif;
+  font-size:clamp(1.9rem,5vw,2.9rem);color:var(--text);margin-bottom:14px;line-height:1.05;
+}
+.sec-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--cyan),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+@supports not (-webkit-background-clip:text){.sec-title em{color:var(--cyan);}}
+.sec-desc{color:var(--muted);font-size:.92rem;max-width:560px;line-height:1.75;}
+.divider{width:56px;height:3px;background:linear-gradient(90deg,var(--purple),var(--cyan));
+  border-radius:2px;margin:18px 0 44px;}
+.sep{height:1px;background:linear-gradient(90deg,transparent,rgba(67,56,202,.3),transparent);
+  margin:0;border:none;position:relative;z-index:1;}
+
+/* ── STATS ── */
+#stats{padding:56px 20px;background:linear-gradient(180deg,transparent,rgba(67,56,202,.04),transparent);}
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:rgba(67,56,202,.2);border-radius:20px;overflow:hidden;
+  border:1px solid rgba(67,56,202,.2);
+}
+@media(max-width:640px){.stats-row{grid-template-columns:repeat(2,1fr);}}
+.stat{
+  background:rgba(7,7,15,.95);padding:36px 20px;text-align:center;
+  transition:background .25s;
+}
+.stat:hover{background:rgba(67,56,202,.1);}
+.stat-n{
+  font-family:'Righteous','Impact','Arial Black',sans-serif;
+  font-size:clamp(2rem,5vw,3.2rem);
+  background:linear-gradient(135deg,var(--cyan),var(--purple-l));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;line-height:1;
+}
+@supports not (-webkit-background-clip:text){.stat-n{color:var(--cyan);}}
+.stat-l{color:var(--muted);font-size:.78rem;margin-top:7px;letter-spacing:1px;text-transform:uppercase;}
+
+/* ── SERVICES ── */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+.card{
+  background:var(--card);border:1px solid rgba(67,56,202,.18);
+  border-radius:20px;padding:32px 26px;
+  transition:border-color .25s,transform .25s,box-shadow .25s;
+  cursor:default;position:relative;overflow:hidden;
+}
+.card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(67,56,202,.07),transparent);
+  opacity:0;transition:.25s;border-radius:20px;
+}
+.card:hover{
+  border-color:rgba(0,229,255,.35);
+  transform:translateY(-6px);
+  box-shadow:0 20px 60px rgba(0,0,0,.45),0 0 40px rgba(0,229,255,.06);
+}
+.card:hover::after{opacity:1;}
+.card-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;font-size:1.5rem;
+  border:1px solid rgba(255,255,255,.08);
+}
+.icon-p{background:rgba(67,56,202,.18);}
+.icon-c{background:rgba(0,229,255,.1);}
+.icon-k{background:rgba(255,26,110,.1);}
+.icon-g{background:rgba(255,215,0,.1);}
+.card h3{
+  font-family:'Righteous','Impact','Arial Black',sans-serif;
+  font-size:1.1rem;color:var(--text);margin-bottom:9px;letter-spacing:.4px;
+}
+.card p{color:var(--muted);font-size:.86rem;line-height:1.75;}
+.badge{
+  display:inline-block;margin-top:14px;padding:3px 11px;
+  border-radius:50px;font-size:.7rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;
+}
+.b-p{background:rgba(67,56,202,.18);color:var(--purple-l);border:1px solid rgba(67,56,202,.25);}
+.b-c{background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.2);}
+.b-k{background:rgba(255,26,110,.1);color:var(--pink);border:1px solid rgba(255,26,110,.2);}
+.b-g{background:rgba(255,215,0,.1);color:var(--gold);border:1px solid rgba(255,215,0,.2);}
+
+/* ── PLAYER ── */
+#player{padding:40px 20px;background:rgba(10,10,20,.5);}
+.player-box{
+  background:rgba(7,7,15,.9);border:1px solid rgba(67,56,202,.25);
+  border-radius:20px;padding:24px 28px;
+  display:flex;align-items:center;gap:22px;flex-wrap:wrap;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.disc{
+  width:64px;height:64px;border-radius:50%;flex-shrink:0;
+  background:conic-gradient(#1a1a2e,#2d1b69,#1a1a2e,#0f0f23,#1a1a2e);
+  border:3px solid rgba(67,56,202,.4);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.disc::after{
+  content:'';position:absolute;width:13px;height:13px;
+  border-radius:50%;background:var(--bg);border:2px solid rgba(67,56,202,.4);
+}
+.disc.spin{animation:spin 3s linear infinite paused;}
+.disc.spin.on{animation-play-state:running;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.p-info{flex:1;min-width:160px;}
+.p-track{font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:3px;}
+.p-artist{font-size:.78rem;color:var(--muted);}
+.p-controls{display:flex;align-items:center;gap:10px;}
+.pBtn{
+  width:42px;height:42px;border-radius:50%;background:transparent;
+  border:1px solid rgba(67,56,202,.3);color:var(--text);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.pBtn:hover{background:rgba(67,56,202,.2);border-color:var(--cyan);color:var(--cyan);}
+.pBtn.play-btn{
+  width:52px;height:52px;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  border:none;box-shadow:0 4px 20px rgba(67,56,202,.4);
+}
+.pBtn.play-btn:hover{transform:scale(1.08);}
+.p-prog{flex:1;min-width:140px;}
+.prog-bar{height:4px;background:rgba(67,56,202,.2);border-radius:2px;cursor:pointer;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--cyan));
+  border-radius:2px;width:35%;transition:width .1s;}
+.prog-time{display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted);margin-top:5px;}
+
+/* ── PRICING ── */
+#pricing{background:radial-gradient(ellipse at 50% 0%,rgba(67,56,202,.12),transparent 65%);}
+.pricing-toggle{
+  display:flex;align-items:center;gap:14px;justify-content:center;margin-bottom:44px;
+}
+.tog-lbl{color:var(--muted);font-size:.88rem;}
+.tog-lbl.on{color:var(--text);font-weight:600;}
+.toggle{
+  width:50px;height:27px;border-radius:50px;position:relative;cursor:pointer;
+  background:rgba(67,56,202,.25);border:1px solid rgba(67,56,202,.35);transition:.25s;
+}
+.tog-knob{
+  width:21px;height:21px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  position:absolute;top:2px;left:2px;transition:.25s;
+  box-shadow:0 2px 8px rgba(67,56,202,.5);
+}
+.toggle.active .tog-knob{left:25px;}
+.save-tag{
+  background:rgba(0,255,170,.12);color:var(--green);
+  border:1px solid rgba(0,255,170,.25);border-radius:50px;
+  padding:2px 10px;font-size:.7rem;font-weight:700;letter-spacing:.5px;
+}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;align-items:start;}
+.price-card{
+  background:var(--card);border:1px solid rgba(67,56,202,.18);
+  border-radius:22px;padding:36px 28px;position:relative;
+  transition:transform .25s,box-shadow .25s;cursor:default;
+}
+.price-card:hover{transform:translateY(-5px);}
+.price-card.hot{
+  border-color:rgba(0,229,255,.5);
+  background:rgba(0,229,255,.02);
+  box-shadow:0 0 60px rgba(0,229,255,.06);
+}
+.price-card.hot::before{
+  content:'';position:absolute;inset:-1px;border-radius:22px;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  z-index:-1;opacity:.4;
+}
+.pop-tag{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  color:#fff;padding:5px 18px;border-radius:50px;
+  font-size:.7rem;font-weight:700;letter-spacing:1px;white-space:nowrap;
+}
+.plan-name{
+  font-family:'Righteous','Impact',sans-serif;font-size:.85rem;
+  letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;
+}
+.plan-price-row{display:flex;align-items:baseline;gap:3px;margin-bottom:5px;}
+.plan-cur{font-size:1.2rem;font-weight:600;color:var(--text);margin-top:6px;}
+.plan-amt{
+  font-family:'Righteous','Impact',sans-serif;
+  font-size:clamp(2.4rem,5vw,3.2rem);color:var(--text);line-height:1;
+}
+.plan-per{color:var(--muted);font-size:.82rem;}
+.plan-desc{color:var(--muted);font-size:.83rem;margin-bottom:24px;line-height:1.65;}
+.plan-sep{height:1px;background:rgba(67,56,202,.18);margin-bottom:22px;}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:28px;}
+.plan-feats li{display:flex;align-items:center;gap:9px;font-size:.85rem;color:var(--muted);}
+.plan-feats li.yes{color:var(--text);}
+.feat-ico{
+  width:19px;height:19px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.feat-ico.y{background:rgba(0,255,170,.12);border:1px solid rgba(0,255,170,.25);}
+.feat-ico.n{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);}
+.plan-btn{
+  width:100%;padding:13px;border-radius:50px;font-weight:700;
+  font-size:.88rem;letter-spacing:.4px;transition:all .2s;border:none;
+  font-family:'Poppins','Segoe UI',sans-serif;
+}
+.plan-btn.primary{
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  color:#fff;box-shadow:0 6px 28px rgba(0,229,255,.2);
+}
+.plan-btn.primary:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,229,255,.35);}
+.plan-btn.ghost{
+  background:transparent;color:var(--purple-l);
+  border:2px solid rgba(67,56,202,.35);
+}
+.plan-btn.ghost:hover{background:rgba(67,56,202,.12);}
+.plan-btn.dark{background:rgba(67,56,202,.14);color:var(--purple-l);}
+.plan-btn.dark:hover{background:rgba(67,56,202,.25);}
+.price-note{text-align:center;margin-top:28px;color:var(--muted);font-size:.8rem;}
+.price-note a{color:var(--cyan);}
+
+/* ── TESTIMONIALS ── */
+#testimonials{background:radial-gradient(ellipse at 50% 100%,rgba(255,26,110,.07),transparent 60%);}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;}
+.testi-card{
+  background:var(--card);border:1px solid rgba(67,56,202,.14);
+  border-radius:20px;padding:28px 24px;
+  transition:border-color .25s,transform .25s;
+}
+.testi-card:hover{border-color:rgba(255,26,110,.3);transform:translateY(-4px);}
+.stars{display:flex;gap:3px;margin-bottom:14px;}
+.stars svg{width:14px;height:14px;fill:var(--gold);}
+.testi-text{color:var(--muted);font-size:.88rem;line-height:1.8;margin-bottom:22px;font-style:italic;}
+.testi-author{display:flex;align-items:center;gap:11px;}
+.avatar{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Righteous',sans-serif;font-size:1rem;font-weight:700;
+}
+.author-name{font-weight:600;font-size:.88rem;color:var(--text);}
+.author-role{font-size:.75rem;color:var(--muted);}
+
+/* ── GALLERY ── */
+.gal-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:auto auto;
+  gap:10px;
+}
+.gal-item{border-radius:16px;overflow:hidden;position:relative;cursor:pointer;}
+.gal-item:nth-child(1){grid-row:span 2;}
+.gal-item .inner{
+  width:100%;aspect-ratio:4/3;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .3s;
+}
+.gal-item:nth-child(1) .inner{aspect-ratio:unset;min-height:260px;height:100%;}
+.gal-item:hover .inner{transform:scale(1.04);}
+.gal-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(7,7,15,.8) 0%,transparent 50%);
+  opacity:0;transition:.25s;
+  display:flex;align-items:flex-end;padding:14px;
+}
+.gal-item:hover .gal-overlay{opacity:1;}
+.gal-cap{font-size:.78rem;color:#fff;font-weight:600;}
+@media(max-width:560px){
+  .gal-grid{grid-template-columns:repeat(2,1fr);}
+  .gal-item:nth-child(1){grid-row:span 1;}
+  .gal-item:nth-child(1) .inner{height:auto;}
+}
+
+/* ── CONTACT ── */
+#contact{background:radial-gradient(ellipse at 50% 50%,rgba(67,56,202,.09),transparent 60%);}
+.contact-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:44px;align-items:start;}
+@media(max-width:760px){.contact-grid{grid-template-columns:1fr;}}
+.cinfo{display:flex;flex-direction:column;gap:20px;}
+.cinfo-item{display:flex;align-items:flex-start;gap:14px;}
+.cinfo-icon{
+  width:42px;height:42px;border-radius:12px;flex-shrink:0;
+  background:rgba(67,56,202,.12);border:1px solid rgba(67,56,202,.25);
+  display:flex;align-items:center;justify-content:center;
+}
+.cinfo-label{font-size:.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+.cinfo-val{color:var(--text);font-weight:500;font-size:.92rem;}
+.form-group{margin-bottom:18px;}
+.form-group label{
+  display:block;font-size:.72rem;color:var(--muted);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;
+}
+.f-ctrl{
+  width:100%;background:rgba(13,13,30,.9);
+  border:1px solid rgba(67,56,202,.2);border-radius:11px;
+  padding:13px 16px;color:var(--text);font-family:'Poppins','Segoe UI',sans-serif;
+  font-size:.88rem;outline:none;transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
+}
+.f-ctrl:focus{border-color:rgba(0,229,255,.45);box-shadow:0 0 0 3px rgba(0,229,255,.07);}
+.f-ctrl::placeholder{color:rgba(122,138,170,.4);}
+textarea.f-ctrl{resize:none;min-height:110px;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:480px){.f-row{grid-template-columns:1fr;}}
+.f-ctrl.sel{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M0 0l5 6 5-6' stroke='%234338CA' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
+}
+
+/* ── FOOTER ── */
+footer{background:rgba(4,4,10,.97);border-top:1px solid rgba(67,56,202,.12);padding:56px 20px 28px;}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:36px;margin-bottom:44px;}
+@media(max-width:720px){.foot-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:420px){.foot-grid{grid-template-columns:1fr;}}
+.foot-brand .logo{display:block;margin-bottom:12px;}
+.foot-desc{color:var(--muted);font-size:.82rem;line-height:1.75;margin-bottom:18px;}
+.socials{display:flex;gap:9px;}
+.soc{
+  width:38px;height:38px;border-radius:10px;
+  background:rgba(67,56,202,.1);border:1px solid rgba(67,56,202,.18);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;color:var(--muted);
+}
+.soc:hover{background:rgba(67,56,202,.28);border-color:var(--cyan);
+  color:var(--cyan);transform:translateY(-2px);}
+.foot-col h4{
+  font-family:'Righteous','Impact',sans-serif;font-size:.82rem;
+  letter-spacing:2px;text-transform:uppercase;color:var(--text);margin-bottom:14px;
+}
+.foot-col ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.foot-col ul a{color:var(--muted);font-size:.82rem;transition:color .2s;}
+.foot-col ul a:hover{color:var(--cyan);}
+.foot-bottom{
+  border-top:1px solid rgba(67,56,202,.1);padding-top:22px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+}
+.foot-copy{color:var(--muted);font-size:.76rem;}
+.foot-legal{display:flex;gap:18px;}
+.foot-legal a{color:var(--muted);font-size:.74rem;transition:color .2s;}
+.foot-legal a:hover{color:var(--cyan);}
+
+/* ── ANIMATIONS (only when JS adds .will-animate) ── */
+.fade-up{transition:opacity .55s ease,transform .55s ease;}
+.fade-up.will-animate{opacity:0;transform:translateY(28px);}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">MARIO<span>DJ</span></span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Servizi</a></li>
+    <li><a href="#pricing">Prezzi</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contatti</a></li>
+  </ul>
+  <button class="nav-btn" onclick="scrollTo('#contact')">Prenota</button>
+  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap" style="text-align:center;position:relative;">
+    <div class="hero-badge"><span class="pulse"></span>Disponibile per eventi 2025</div>
+    <h1 class="hero-title">
+      <span class="line1">MARIO</span>
+      <span class="line2">DJ</span>
+    </h1>
+    <p class="hero-sub">Il suono che <b>trasforma</b> ogni momento</p>
+    <p class="hero-tags">Matrimoni &middot; Club &middot; Feste Private &middot; Festival &middot; Corporate</p>
+    <div class="hero-btns">
+      <button class="btn-grad" onclick="scrollTo('#pricing')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21"/></svg>
+        Scopri i Pacchetti
+      </button>
+      <button class="btn-outline" onclick="scrollTo('#contact')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.61 5.61l.9-.81a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Contattami
+      </button>
+    </div>
+    <div class="visualizer" id="viz"></div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- STATS -->
+<section id="stats">
+  <div class="wrap">
+    <div class="stats-row">
+      <div class="stat"><div class="stat-n" data-to="500">500+</div><div class="stat-l">Eventi</div></div>
+      <div class="stat"><div class="stat-n" data-to="12">12+</div><div class="stat-l">Anni Esperienza</div></div>
+      <div class="stat"><div class="stat-n" data-to="50">50+</div><div class="stat-l">Città</div></div>
+      <div class="stat"><div class="stat-n" data-to="98">98%</div><div class="stat-l">Soddisfazione</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="fade-up">
+      <span class="sec-label">Cosa offro</span>
+      <h2 class="sec-title">I Miei <em>Servizi</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-3">
+      <div class="card fade-up">
+        <div class="card-icon icon-p">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c6ef5" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <h3>Matrimoni &amp; Cerimonie</h3>
+        <p>Un mix perfetto per il giorno più importante. Dalla cerimonia al rinfresco, ogni momento diventa magia.</p>
+        <span class="badge b-p">Più Richiesto</span>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon icon-c">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Club &amp; Discoteche</h3>
+        <p>Tecno, house, hip-hop o commerciale: sound system professionale e gestione pista da ballo garantita.</p>
+        <span class="badge b-c">Club Ready</span>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon icon-k">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff1a6e" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Feste Private</h3>
+        <p>Compleanni, lauree e anniversari. Attrezzatura completa, luci LED e playlist sui tuoi gusti.</p>
+        <span class="badge b-k">Personalizzato</span>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon icon-g">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Corporate &amp; Business</h3>
+        <p>Aperitivi aziendali, team building e gala dinner. Musica d'ambiente professionale per il tuo brand.</p>
+        <span class="badge b-g">Business</span>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon icon-p">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c6ef5" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        </div>
+        <h3>Festival &amp; Outdoor</h3>
+        <p>Palchi open air, festival estivi e sagre. Impianto potente resistente all'esterno, performance da headliner.</p>
+        <span class="badge b-p">Outdoor</span>
+      </div>
+      <div class="card fade-up">
+        <div class="card-icon icon-c">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+        </div>
+        <h3>Produzione &amp; Mix</h3>
+        <p>Registrazione mix personalizzati, produzione jingle e colonne sonore per comunicazioni digitali.</p>
+        <span class="badge b-c">Studio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLAYER -->
+<section id="player">
+  <div class="wrap">
+    <div class="player-box fade-up">
+      <div class="disc spin" id="disc">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="1.5" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </div>
+      <div class="p-info">
+        <div class="p-track">Midnight Groove — Mix Esclusivo</div>
+        <div class="p-artist">MarioDJ · House · 2025</div>
+      </div>
+      <div class="p-controls">
+        <button class="pBtn" aria-label="Brano precedente">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+        </button>
+        <button class="pBtn play-btn" id="playBtn" aria-label="Play / Pausa">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white" id="playIcon"><polygon points="5 3 19 12 5 21"/></svg>
+        </button>
+        <button class="pBtn" aria-label="Brano successivo">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
+        </button>
+      </div>
+      <div class="p-prog">
+        <div class="prog-bar">
+          <div class="prog-fill" id="pFill"></div>
+        </div>
+        <div class="prog-time">
+          <span id="pTime">1:24</span><span>3:58</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="fade-up" style="text-align:center;max-width:580px;margin:0 auto 10px;">
+      <span class="sec-label">Pacchetti</span>
+      <h2 class="sec-title">Scegli il tuo <em>Pacchetto</em></h2>
+      <p class="sec-desc" style="margin:0 auto;">Prezzi trasparenti, senza sorprese. Ogni pacchetto è personalizzabile.</p>
+    </div>
+    <div style="display:flex;justify-content:center;"><div class="divider"></div></div>
+    <div class="pricing-toggle fade-up">
+      <span class="tog-lbl on" id="lbl1">A ore</span>
+      <div class="toggle" id="togBtn" role="switch" aria-checked="false" tabindex="0">
+        <div class="tog-knob"></div>
+      </div>
+      <span class="tog-lbl" id="lbl2">Evento completo</span>
+      <span class="save-tag">-20%</span>
+    </div>
+    <div class="pricing-grid">
+      <!-- BASE -->
+      <div class="price-card fade-up">
+        <div class="plan-name">Base</div>
+        <div class="plan-price-row">
+          <span class="plan-cur">€</span>
+          <span class="plan-amt" data-h="150" data-e="450">150</span>
+          <span class="plan-per" id="per0">/ora</span>
+        </div>
+        <p class="plan-desc">Perfetto per feste piccole e aperitivi. Musica di qualità essenziale.</p>
+        <div class="plan-sep"></div>
+        <ul class="plan-feats">
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>DJ set fino a 3 ore</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Sistema audio professionale</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Playlist personalizzata</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Microfono per annunci</li>
+          <li><span class="feat-ico n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Impianto luci LED</li>
+          <li><span class="feat-ico n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Macchina del fumo</li>
+        </ul>
+        <button class="plan-btn ghost" onclick="scrollTo('#contact')">Inizia con Base</button>
+      </div>
+      <!-- PRO -->
+      <div class="price-card hot fade-up">
+        <div class="pop-tag">PIU' POPOLARE</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price-row">
+          <span class="plan-cur">€</span>
+          <span class="plan-amt" data-h="250" data-e="750">250</span>
+          <span class="plan-per" id="per1">/ora</span>
+        </div>
+        <p class="plan-desc">Il preferito per matrimoni e compleanni importanti.</p>
+        <div class="plan-sep"></div>
+        <ul class="plan-feats">
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>DJ set fino a 6 ore</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Sistema audio premium</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Impianto luci LED RGB</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Macchina del fumo</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>2 Microfoni wireless</li>
+          <li><span class="feat-ico n"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Sessione foto/video</li>
+        </ul>
+        <button class="plan-btn primary" onclick="scrollTo('#contact')">Scegli Pro</button>
+      </div>
+      <!-- ELITE -->
+      <div class="price-card fade-up">
+        <div class="plan-name">Elite</div>
+        <div class="plan-price-row">
+          <span class="plan-cur">€</span>
+          <span class="plan-amt" data-h="400" data-e="1200">400</span>
+          <span class="plan-per" id="per2">/ora</span>
+        </div>
+        <p class="plan-desc">L'esperienza completa per eventi esclusivi e festival.</p>
+        <div class="plan-sep"></div>
+        <ul class="plan-feats">
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>DJ set illimitato</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Sistema audio flagship</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Show luci professionale</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Fumo + CO₂</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Sessione foto/video</li>
+          <li class="yes"><span class="feat-ico y"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00ffaa" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></span>Assistente tecnico dedicato</li>
+        </ul>
+        <button class="plan-btn dark" onclick="scrollTo('#contact')">Scegli Elite</button>
+      </div>
+    </div>
+    <p class="price-note fade-up">Prezzi IVA esclusa. <a onclick="scrollTo('#contact')" style="cursor:pointer;">Richiedi preventivo personalizzato →</a></p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="wrap">
+    <div class="fade-up">
+      <span class="sec-label">Recensioni</span>
+      <h2 class="sec-title">Cosa dicono i <em>Clienti</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card fade-up">
+        <div class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <p class="testi-text">"Mario ha reso il nostro matrimonio perfetto. La musica era esattamente quella che volevamo, ha capito subito il nostro stile. Tutti gli ospiti hanno ballato fino alle 4!"</p>
+        <div class="testi-author">
+          <div class="avatar" style="background:linear-gradient(135deg,#4338CA,#00e5ff);color:#fff;">S</div>
+          <div><div class="author-name">Sara &amp; Luca Bianchi</div><div class="author-role">Matrimonio · Roma 2024</div></div>
+        </div>
+      </div>
+      <div class="testi-card fade-up">
+        <div class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <p class="testi-text">"Professionale e con un gusto musicale eccezionale. Il set al nostro club sabato sera è stato il migliore della stagione. Torneremo sicuramente!"</p>
+        <div class="testi-author">
+          <div class="avatar" style="background:linear-gradient(135deg,#ff1a6e,#4338CA);color:#fff;">M</div>
+          <div><div class="author-name">Marco Esposito</div><div class="author-role">Club Manager · Milano</div></div>
+        </div>
+      </div>
+      <div class="testi-card fade-up">
+        <div class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <p class="testi-text">"Evento aziendale memorabile. Discrezione, eleganza e musica perfettamente calibrata per l'ambiente. I colleghi sono rimasti colpiti!"</p>
+        <div class="testi-author">
+          <div class="avatar" style="background:linear-gradient(135deg,#00ffaa,#4338CA);color:#fff;">G</div>
+          <div><div class="author-name">Giulia Ferretti</div><div class="author-role">Event Manager · Napoli</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="fade-up">
+      <span class="sec-label">Portfolio</span>
+      <h2 class="sec-title">Le Mie <em>Performance</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="gal-grid fade-up">
+      <div class="gal-item">
+        <div class="inner" style="background:linear-gradient(135deg,rgba(67,56,202,.4),rgba(0,229,255,.1),rgba(13,13,26,1));">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(67,56,202,.7)" stroke-width="1.2" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <div class="gal-overlay"><span class="gal-cap">Wedding Night — Roma 2024</span></div>
+      </div>
+      <div class="gal-item">
+        <div class="inner" style="background:linear-gradient(135deg,rgba(255,26,110,.3),rgba(67,56,202,.15),rgba(13,13,26,1));">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,110,.7)" stroke-width="1.2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16"/></svg>
+        </div>
+        <div class="gal-overlay"><span class="gal-cap">Club Set — Milano</span></div>
+      </div>
+      <div class="gal-item">
+        <div class="inner" style="background:linear-gradient(135deg,rgba(0,229,255,.2),rgba(67,56,202,.15),rgba(13,13,26,1));">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(0,229,255,.7)" stroke-width="1.2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="gal-overlay"><span class="gal-cap">Festival Estate — Napoli</span></div>
+      </div>
+      <div class="gal-item">
+        <div class="inner" style="background:linear-gradient(135deg,rgba(255,215,0,.2),rgba(67,56,202,.15),rgba(13,13,26,1));">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,215,0,.7)" stroke-width="1.2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="gal-overlay"><span class="gal-cap">Gala Aziendale — Torino</span></div>
+      </div>
+      <div class="gal-item">
+        <div class="inner" style="background:linear-gradient(135deg,rgba(0,255,170,.2),rgba(67,56,202,.15),rgba(13,13,26,1));">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(0,255,170,.7)" stroke-width="1.2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        </div>
+        <div class="gal-overlay"><span class="gal-cap">Compleanno Privato</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="fade-up">
+      <span class="sec-label">Prenota</span>
+      <h2 class="sec-title">Contattami per il <em>Tuo Evento</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="cinfo fade-up">
+        <div class="cinfo-item">
+          <div class="cinfo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.61 5.61l.9-.81a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><div class="cinfo-label">Telefono</div><div class="cinfo-val">+39 333 000 0000</div></div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c6ef5" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><div class="cinfo-label">Email</div><div class="cinfo-val">info@mariodj.it</div></div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff1a6e" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><div class="cinfo-label">Zona</div><div class="cinfo-val">Italia · Disponibile ovunque</div></div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div><div class="cinfo-label">Risposta</div><div class="cinfo-val">Entro 24 ore</div></div>
+        </div>
+      </div>
+
+      <form class="fade-up" onsubmit="handleForm(event)">
+        <div class="f-row">
+          <div class="form-group"><label for="nome">Nome *</label><input type="text" id="nome" class="f-ctrl" placeholder="Nome" required></div>
+          <div class="form-group"><label for="cogn">Cognome *</label><input type="text" id="cogn" class="f-ctrl" placeholder="Cognome" required></div>
+        </div>
+        <div class="f-row">
+          <div class="form-group"><label for="email">Email *</label><input type="email" id="email" class="f-ctrl" placeholder="email@esempio.it" required></div>
+          <div class="form-group"><label for="tel">Telefono</label><input type="tel" id="tel" class="f-ctrl" placeholder="+39 333 000 0000"></div>
+        </div>
+        <div class="f-row">
+          <div class="form-group">
+            <label for="tipo">Tipo Evento *</label>
+            <select id="tipo" class="f-ctrl sel" required>
+              <option value="" disabled selected>Seleziona</option>
+              <option>Matrimonio</option><option>Compleanno</option>
+              <option>Club / Discoteca</option><option>Evento aziendale</option>
+              <option>Festival / Outdoor</option><option>Altro</option>
+            </select>
+          </div>
+          <div class="form-group"><label for="data">Data Evento *</label><input type="date" id="data" class="f-ctrl" required></div>
+        </div>
+        <div class="form-group">
+          <label for="pkg">Pacchetto</label>
+          <select id="pkg" class="f-ctrl sel">
+            <option value="" disabled selected>Seleziona pacchetto</option>
+            <option>Base (da €150/ora)</option><option>Pro (da €250/ora)</option>
+            <option>Elite (da €400/ora)</option><option>Preventivo personalizzato</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="msg">Messaggio</label><textarea id="msg" class="f-ctrl" placeholder="Raccontami del tuo evento: location, numero ospiti, genere musicale preferito..."></textarea></div>
+        <button type="submit" class="btn-grad" style="width:100%;justify-content:center;" id="submitBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Invia Richiesta
+        </button>
+        <p id="fMsg" style="text-align:center;margin-top:10px;font-size:.84rem;display:none;"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="logo" style="font-family:'Righteous','Impact','Arial Black',sans-serif;font-size:1.6rem;letter-spacing:2px;">MARIO<span style="color:var(--cyan);text-shadow:0 0 10px rgba(0,229,255,.5);">DJ</span></span>
+        <p class="foot-desc" style="margin-top:12px;">Il suono che trasforma ogni momento in un ricordo indimenticabile. 12 anni di esperienza, 500+ eventi in tutta Italia.</p>
+        <div class="socials">
+          <a class="soc" href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a class="soc" href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a class="soc" href="#" aria-label="TikTok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></a>
+          <a class="soc" href="#" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>Servizi</h4>
+        <ul>
+          <li><a href="#services">Matrimoni</a></li>
+          <li><a href="#services">Club &amp; Disco</a></li>
+          <li><a href="#services">Feste Private</a></li>
+          <li><a href="#services">Corporate</a></li>
+          <li><a href="#services">Festival</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Pacchetti</h4>
+        <ul>
+          <li><a href="#pricing">Base — €150/h</a></li>
+          <li><a href="#pricing">Pro — €250/h</a></li>
+          <li><a href="#pricing">Elite — €400/h</a></li>
+          <li><a href="#contact">Preventivo Custom</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Info</h4>
+        <ul>
+          <li><a href="#testimonials">Recensioni</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contatti</a></li>
+          <li><a href="#">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="foot-copy">© 2025 MarioDJ · Tutti i diritti riservati</p>
+      <div class="foot-legal"><a href="#">Privacy Policy</a><a href="#">Cookie</a><a href="#">Termini</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── UTILS ──
+function scrollTo(sel){
+  var el = document.querySelector(sel);
+  if(el) el.scrollIntoView({behavior:'smooth'});
+}
+
+// ── CANVAS 2D PARTICLE BACKGROUND (no CDN needed) ──
+(function(){
+  var canvas = document.getElementById('bgCanvas');
+  var ctx = canvas.getContext('2d');
+  var W, H, particles = [], mouse = {x:0,y:0};
+  var colors = ['#4338CA','#00e5ff','#ff1a6e','#7c6ef5','#00ffaa'];
+
+  function resize(){
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  document.addEventListener('mousemove', function(e){
+    mouse.x = e.clientX; mouse.y = e.clientY;
+  });
+
+  function mkParticle(){
+    return {
+      x: Math.random()*W, y: Math.random()*H,
+      vx: (Math.random()-.5)*.4, vy: (Math.random()-.5)*.4,
+      r: Math.random()*2+.5,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      alpha: Math.random()*.6+.15
+    };
+  }
+  for(var i=0;i<130;i++) particles.push(mkParticle());
+
+  // Neon grid (perspective)
+  function drawGrid(){
+    var horizon = H*.55;
+    var vp = {x:W/2, y:horizon};
+    ctx.save();
+    ctx.strokeStyle='rgba(67,56,202,.12)';
+    ctx.lineWidth=1;
+    // vertical lines (converging)
+    for(var gx=-8;gx<=8;gx++){
+      var bx = W/2 + gx*(W/16);
+      ctx.beginPath();
+      ctx.moveTo(vp.x, horizon);
+      ctx.lineTo(bx, H+20);
+      ctx.stroke();
+    }
+    // horizontal lines
+    for(var gy=0;gy<8;gy++){
+      var t = gy/7;
+      var ease = t*t*t;
+      var y = horizon + ease*(H-horizon+20);
+      var xl = W/2 - ease*(W/2+20);
+      var xr = W/2 + ease*(W/2+20);
+      ctx.beginPath();ctx.moveTo(xl,y);ctx.lineTo(xr,y);ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // Floating rings
+  var rings=[
+    {x:W*.75,y:H*.3,r:120,rot:0,speed:.008,color:'rgba(67,56,202,.12)'},
+    {x:W*.2, y:H*.7,r:80, rot:1,speed:.012,color:'rgba(0,229,255,.08)'},
+  ];
+
+  function drawRing(ring){
+    ctx.save();
+    ctx.translate(ring.x,ring.y);
+    ctx.rotate(ring.rot);
+    ctx.beginPath();
+    ctx.ellipse(0,0,ring.r,ring.r*.25,0,0,Math.PI*2);
+    ctx.strokeStyle=ring.color;
+    ctx.lineWidth=2;ctx.stroke();
+    ctx.restore();
+    ring.rot+=ring.speed;
+    ring.x = ring.x * .998 + (ring===rings[0]?W*.75:W*.2)*.002;
+  }
+
+  var raf;
+  function loop(){
+    raf = requestAnimationFrame(loop);
+    ctx.clearRect(0,0,W,H);
+    drawGrid();
+    rings[0].x=W*.75; rings[1].x=W*.2;
+    rings[0].y=H*.3;  rings[1].y=H*.7;
+    rings[0].r=Math.min(W,H)*.13; rings[1].r=Math.min(W,H)*.09;
+    rings.forEach(drawRing);
+
+    // Mouse glow
+    var mg = ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,200);
+    mg.addColorStop(0,'rgba(67,56,202,.06)');
+    mg.addColorStop(1,'transparent');
+    ctx.fillStyle=mg; ctx.fillRect(0,0,W,H);
+
+    // Particles
+    for(var i=0;i<particles.length;i++){
+      var p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if(p.x<-5) p.x=W+5;
+      if(p.x>W+5) p.x=-5;
+      if(p.y<-5) p.y=H+5;
+      if(p.y>H+5) p.y=-5;
+      // glow
+      var g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
+      g.addColorStop(0,p.color);
+      g.addColorStop(1,'transparent');
+      ctx.globalAlpha=p.alpha*.5;
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r*4,0,Math.PI*2);ctx.fill();
+      // core
+      ctx.globalAlpha=p.alpha;
+      ctx.fillStyle=p.color;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+    }
+    ctx.globalAlpha=1;
+  }
+  loop();
+})();
+
+// ── VISUALIZER BARS ──
+(function(){
+  var viz = document.getElementById('viz');
+  var heights=[6,10,16,26,38,48,54,46,34,22,15,20,36,50,56,52,42,30,18,26,40,52,58,50,38,24,16,22,36,46,42,30];
+  for(var i=0;i<28;i++){
+    var b=document.createElement('div');
+    b.className='vbar';
+    var h=heights[i%heights.length];
+    b.style.cssText='--h:'+h+'px;--i:'+i+';';
+    viz.appendChild(b);
+  }
+})();
+
+// ── SCROLL FADE-UP ANIMATIONS ──
+// Critical: only hide elements AFTER JS is confirmed running
+(function(){
+  var els = document.querySelectorAll('.fade-up');
+  els.forEach(function(el){ el.classList.add('will-animate'); });
+
+  if(!('IntersectionObserver' in window)){
+    // Fallback: just show everything
+    els.forEach(function(el){ el.classList.add('visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  },{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+  els.forEach(function(el){ obs.observe(el); });
+})();
+
+// ── COUNTER ANIMATION ──
+(function(){
+  var nums = document.querySelectorAll('.stat-n[data-to]');
+  if(!('IntersectionObserver' in window)){
+    nums.forEach(function(n){
+      n.textContent=n.dataset.to+(n.dataset.to==='98'?'%':'+');
+    });
+    return;
+  }
+  var obs2 = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var n=e.target, target=parseInt(n.dataset.to), cur=0;
+      var suf = target===98?'%':'+';
+      var step=target/60;
+      var t=setInterval(function(){
+        cur=Math.min(cur+step,target);
+        n.textContent=Math.round(cur)+suf;
+        if(cur>=target) clearInterval(t);
+      },18);
+      obs2.unobserve(n);
+    });
+  },{threshold:.5});
+  nums.forEach(function(n){ obs2.observe(n); });
+})();
+
+// ── 3D TILT on cards ──
+(function(){
+  if(window.matchMedia('(pointer:coarse)').matches) return; // skip on touch
+  document.querySelectorAll('.card,.price-card,.testi-card').forEach(function(card){
+    card.addEventListener('mousemove',function(e){
+      var r=card.getBoundingClientRect();
+      var x=(e.clientX-r.left)/r.width-.5;
+      var y=(e.clientY-r.top)/r.height-.5;
+      card.style.transform='perspective(700px) rotateY('+(x*10)+'deg) rotateX('+(-y*8)+'deg) translateY(-5px)';
+    });
+    card.addEventListener('mouseleave',function(){
+      card.style.transform='';
+    });
+  });
+})();
+
+// ── PRICING TOGGLE ──
+(function(){
+  var tog=document.getElementById('togBtn');
+  var lbl1=document.getElementById('lbl1');
+  var lbl2=document.getElementById('lbl2');
+  var isEvent=false;
+  function update(){
+    document.querySelectorAll('.plan-amt').forEach(function(el){
+      el.textContent=isEvent?el.dataset.e:el.dataset.h;
+    });
+    document.querySelectorAll('[id^=per]').forEach(function(el){
+      el.textContent=isEvent?'/evento':'/ora';
+    });
+    lbl1.className='tog-lbl'+(isEvent?'':' on');
+    lbl2.className='tog-lbl'+(isEvent?' on':'');
+    tog.classList.toggle('active',isEvent);
+    tog.setAttribute('aria-checked',isEvent);
+  }
+  tog.addEventListener('click',function(){ isEvent=!isEvent; update(); });
+  tog.addEventListener('keydown',function(e){
+    if(e.key===' '||e.key==='Enter'){ e.preventDefault(); isEvent=!isEvent; update(); }
+  });
+})();
+
+// ── PLAYER ──
+(function(){
+  var playing=false, progress=35;
+  var disc=document.getElementById('disc');
+  var btn=document.getElementById('playBtn');
+  var icon=document.getElementById('playIcon');
+  var fill=document.getElementById('pFill');
+  var timeEl=document.getElementById('pTime');
+  btn.addEventListener('click',function(){
+    playing=!playing;
+    disc.classList.toggle('on',playing);
+    icon.innerHTML=playing
+      ?'<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
+      :'<polygon points="5 3 19 12 5 21"/>';
+  });
+  setInterval(function(){
+    if(!playing) return;
+    progress=Math.min(progress+.05,100);
+    fill.style.width=progress+'%';
+    var sec=Math.round(238*progress/100);
+    timeEl.textContent=Math.floor(sec/60)+':'+(sec%60<10?'0':'')+sec%60;
+    if(progress>=100){ playing=false; disc.classList.remove('on'); progress=0; }
+  },100);
+})();
+
+// ── FORM ──
+function handleForm(e){
+  e.preventDefault();
+  var btn=document.getElementById('submitBtn');
+  var msg=document.getElementById('fMsg');
+  btn.disabled=true;
+  btn.textContent='Invio...';
+  setTimeout(function(){
+    btn.disabled=false;
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Inviato!';
+    msg.textContent='Grazie! Ti risponderemo entro 24 ore.';
+    msg.style.color='#00ffaa';
+    msg.style.display='block';
+    e.target.reset();
+    setTimeout(function(){
+      btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Invia Richiesta';
+      msg.style.display='none';
+    },4000);
+  },1100);
+}
+
+// ── NAV SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var h=a.getAttribute('href');
+    if(h&&h.length>1&&h[0]==='#'){
+      e.preventDefault();
+      var t=document.querySelector(h);
+      if(t) t.scrollIntoView({behavior:'smooth'});
+    }
+  });
+});
+</script>
+</body>
+</html>

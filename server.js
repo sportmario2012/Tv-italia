@@ -226,6 +226,10 @@ app.get('/proxy', async (req, res) => {
   }
 });
 
+// ── Route: MarioDJ website ──
+app.get('/mario-dj', (req, res) => res.sendFile(path.join(__dirname, 'mario-dj.html')));
+app.get('/mario-dj.html', (req, res) => res.sendFile(path.join(__dirname, 'mario-dj.html')));
+
 // ── Start ──
 app.listen(PORT, () => {
   console.log(`TV Italia Proxy running on port ${PORT}`);
